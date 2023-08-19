@@ -1,0 +1,9 @@
+tensorflow==2.11.*
+pymatgen
+megnet
+hyperopt
+scikit-opt
+pymoo
+m3gnet
+configparser
+ArgumentParser

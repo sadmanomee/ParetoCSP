@@ -1,0 +1,42 @@
+[BASE]
+# The chemical formula of the compound, element symbol + count, i.e., Ca4 S4, Cs1 Pb1 I3
+compound = Ca4 S4
+# The GN model file path, it is better to use absolute path.
+;gn_model_path = /GN/model/path
+gn_model_path = F:\GN-BOSS\NN_model\model\val_mae_00486_0.031741.hdf5
+# Output path, use to save the results.
+output_path = .
+# Load model and predict using GPU
+use_gpu = False
+
+[LATTICE]
+# 1) if space_group<=1 : without symmetry
+# 2) else : with symmetry
+#    i) [A, B] -> A<=space_group<=B;
+#    ii) (A, B, C ...) -> space_group=A,B,C...;
+#    iii) A -> space_group=A
+space_group = [2, 230]
+# Lattice a,b,c (unit: Angstrom):
+#    1) [A, B] -> A<=Lattice<=B;
+#    2) (A, B, C ...) -> Lattice=A,B,C...;
+#    3) A -> Lattice=A
+lattice_a = [2, 30]
+lattice_b = [2, 30]
+lattice_c = [2, 30]
+# Lattice alpha,beta,gamma (unit: degree):
+#    1) [A, B] -> A<=Lattice<=B;
+#    2) (A, B, C ...) -> Lattice=A,B,C...;
+#    3) A -> Lattice=A
+lattice_alpha = [20, 160]
+lattice_beta = [20, 160]
+lattice_gamma = [20, 160]
+
+[PROGRAM]
+# Search algorithm: 1) 'rand' (Random Search); 2) 'tpe' (Bayesian Optimization); 3) 'pso' (Particle Swarm Optimization)
+algorithm = tpe
+# The count of initial random points, only valid when the algorithm is tpe
+n_init = 200
+# The maximum steps of program runs
+max_step = 5000
+# Specify the random seed, -1 is None
+rand_seed = 100
