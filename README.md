@@ -1,9 +1,7 @@
 # ParetoCSP
-Github repository for our paper - **"Crystal structure prediction using neural network potential and age-fitness Pareto optimized genetic algorithm"** [Arxiv](https://www.cell.com/patterns/pdfExtended/S2666-3899(22)00076-9). 
+Github repository for our manuscript - **"Crystal structure prediction using neural network potential and age-fitness Pareto optimized genetic algorithm"**
 
 Authors: Sadman Sadeed Omee, Lai Wei, and Jianjun Hu.
-
-Join our online Discord discussion group [Here](https://discord.gg/fVasd6tapU)
 
 
 [Machine Learning and Evolution Laboratory,](http://mleg.cse.sc.edu)<br />
@@ -25,7 +23,7 @@ Please install the following packages if not already installed. We show how to i
 
 Use the following commands to install the necessary packages:
 ```bash
-git clone https://github.com/usccolumbia/deeperGATGNN.git
+git clone https://github.com/sadmanomee/ParetoCSP.git
 cd ParetoCSP
 pip install -r requirements.txt
 ```
