@@ -1,6 +1,7 @@
 m3gnet
 pymatgen
 megnet
+pymoo
 hyperopt
 configparser
 ArgumentParser
