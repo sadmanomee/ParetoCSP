@@ -36,7 +36,7 @@ python predict_structure.py
 ```
 To specify the crystal composition and other arguments, use the following command (recommended):
 ```bash
-python predict_structure.py --comp=Sr1Ti1O3 --alg=paretocsp --pop=100 --max_step=5000
+python predict_structure.py --comp=Sr1Ti1O3 --alg=paretocsp --pop=92 --max_step=5000
 ```
 This will run ParetoCSP for the composition SrTiO<sub>3</sub> (you need to specify the atom number after each compound symbol) for the PartoCSP algorithm with a population size of 100 for the NSGA-III and the algorithm will run for a total 5000 generations. The output crystal structure (CIF file) path will be printed at the end of the algorithm run. Other arguments that can be passed with the command are mentioned in ```predict_structure.py``` file.
 

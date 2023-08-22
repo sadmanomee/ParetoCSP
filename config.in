@@ -1,5 +1,5 @@
 [BASE]
-# The chemical formula of the compound, element symbol + count, i.e., Ca4 S4, Cs1 Pb1 I3
+# The chemical formula of the compound, element symbol + count, i.e., Ga1 Ni3, Sr1 W1 N1 O2
 compound = Sr1 Ti1 O3
 # The GN model file path (needed if you use GN instead of M3GNet), it is better to use absolute path.
 ;gn_model_path = /GN/model/path

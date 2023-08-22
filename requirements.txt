@@ -1,9 +1,6 @@
-tensorflow==2.11.*
+m3gnet
 pymatgen
 megnet
 hyperopt
-scikit-opt
-pymoo
-m3gnet
 configparser
 ArgumentParser
