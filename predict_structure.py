@@ -1,6 +1,7 @@
 import os
 import time
 import warnings
+import sys
 
 warnings.filterwarnings("ignore")
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
@@ -8,7 +9,6 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 import numpy as np
 from argparse import ArgumentParser
 import hyperopt as hy
-from sko.PSO import PSO
 
 from pymatgen.io.cif import CifParser, CifWriter
 from pymatgen.core.structure import Structure, Lattice
@@ -66,7 +66,7 @@ class PredictStructure:
         self.total_atom_count = self.input_config.total_atom_count
         # self.total_atom_count = sum(self.elements_count)
         
-        if self.input_config.algorithm in ['tpe', 'rand', 'anneal']:
+        if self.input_config.algorithm == 'tpe':
             self.output_path = os.path.join(self.input_config.output_path, self.compound + '_' + self.input_config.algorithm)
         else:
             self.output_path = os.path.join(self.input_config.output_path, self.compound + '_' + self.input_config.algorithm + '_pop' + str(self.input_config.pop))
@@ -75,7 +75,7 @@ class PredictStructure:
         check_and_rename_path(self.structures_path)
 
 
-        self.is_ga_pso = None
+        self.is_ga = None
         self.elements_info = elements_info
 
         self.step_number = 0
@@ -90,7 +90,7 @@ class PredictStructure:
     def predict_structure_energy(self, kwargs):
         self.step_number += 1
 
-        if self.is_ga_pso:
+        if self.is_ga:
             _dict = {'a': kwargs[0], 'b': kwargs[1], 'c': kwargs[2],
                      'alpha': kwargs[3], 'beta': kwargs[4], 'gamma': kwargs[5],
                      'sg': int(kwargs[6]), 'wp': kwargs[7]}
@@ -134,7 +134,7 @@ class PredictStructure:
             # print('exception .......................')
             result = 999
 
-        if self.is_ga_pso:
+        if self.is_ga:
             return result
         else:
             return {'loss': result, 'status': hy.STATUS_OK}
@@ -144,15 +144,16 @@ class PredictStructure:
         with open(os.path.join(self.output_path, 'energy_data.csv'), 'w+') as f:
             f.writelines("number,step,energy,sg_number,wp_number,time\n")
 
-        if self.input_config.algorithm in ['tpe', 'rand', 'anneal']:
+        if self.input_config.algorithm  == 'paretocsp':
+            self.find_stable_structure_by_paretocsp()
+        elif self.input_config.algorithm == 'tpe':
             self.find_stable_structure_by_hyperopt()
-        elif self.input_config.algorithm in ['afpo']:
-            self.find_stable_structure_by_afpo()
         else:
-            self.find_stable_structure_by_pso()
+            print('wrong algorithm name !!!')
+            sys.exit(0)
 
     def find_stable_structure_by_hyperopt(self):
-        self.is_ga_pso = False
+        self.is_ga = False
 
         if self.total_atom_count % sum(self.elements_count) != 0:
             raise Exception("The parameter `atom_count` or `compound` setting error!")
@@ -184,15 +185,8 @@ class PredictStructure:
         max_step = self.input_config.max_step
         rand_seed = self.input_config.rand_seed
 
-        if algorithm == 'rand':
-            print('using Random Search ...')
-            algo = hy.rand.suggest
-        elif algorithm == 'anneal':
-            print('using Simulated Annealing ...')
-            algo = hy.partial(hy.anneal.suggest)
-        else:
-            print('using Bayesian Optimization ...')
-            algo = hy.partial(hy.tpe.suggest, n_startup_jobs=n_init)
+        print('using Bayesian Optimization ...')
+        algo = hy.partial(hy.tpe.suggest, n_startup_jobs=n_init)
 
         if rand_seed == -1:
             rand_seed = None
@@ -210,8 +204,8 @@ class PredictStructure:
         )
         print(best)
     
-    def find_stable_structure_by_afpo(self):
-        self.is_ga_pso = True
+    def find_stable_structure_by_paretocsp(self):
+        self.is_ga = True
 
         a = self.input_config.lattice_a
         b = self.input_config.lattice_b
@@ -304,51 +298,6 @@ class PredictStructure:
         cifWriter.write_file(relaxed_structure_path)
         print(f'Relaxed structures saved in : {relaxed_structure_path}')
         print(f'Final energy after relaxation: {final_energy}')
-
-    def find_stable_structure_by_pso(self):
-        self.is_ga_pso = True
-
-        a = self.input_config.lattice_a
-        b = self.input_config.lattice_b
-        c = self.input_config.lattice_c
-        alpha = self.input_config.lattice_alpha
-        beta = self.input_config.lattice_beta
-        gamma = self.input_config.lattice_gamma
-
-        lb = [a[0], b[0], c[0], alpha[0], beta[0], gamma[0], 0, 0]
-        ub = [a[1], b[1], c[1], alpha[1], beta[1], gamma[1], len(self.space_group), self.max_wyckoffs_count]
-
-        compound_times = self.total_atom_count / sum(self.elements_count)
-        compound_times = int(compound_times)
-
-        for j, a_j in enumerate(self.elements):
-            for c_k in range(compound_times * self.elements_count[j]):
-                self.all_atoms.append(a_j)
-                lb += [0, 0, 0]
-                ub += [1, 1, 1]
-
-        max_step = self.input_config.max_step
-        pop = self.input_config.pop
-        rand_seed = self.input_config.rand_seed
-        if rand_seed != -1:
-            np.random.seed(rand_seed)
-
-
-        print('using PSO ...')
-        pso = PSO(
-            func = self.predict_structure_energy,
-            n_dim = len(lb),
-            pop = pop,
-            max_iter = max_step,
-            lb = lb,
-            ub = ub,
-            w = 0.8,
-            c1 = 0.5,
-            c2 = 0.5,
-            verbose = True
-        )
-        pso.run()
-        print('best_x is ', pso.gbest_x, 'best_y is', pso.gbest_y)
 
     def save_structure_file(self, all_atoms, struc_parameters, file_name):
         sg = struc_parameters['sg']

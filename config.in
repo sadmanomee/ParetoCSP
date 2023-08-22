@@ -32,11 +32,11 @@ lattice_beta = [20, 160]
 lattice_gamma = [20, 160]
 
 [PROGRAM]
-# Search algorithm: 1) 'rand' (Random Search); 2) 'tpe' (Bayesian Optimization); 3) 'pso' (Particle Swarm Optimization) 4) 'afpo' (Age-Fitness Pareto Optimization)
-algorithm = afpo
+# Search algorithm: 1) 'paretocsp' (ParetoCSP); 2) 'tpe' (Bayesian Optimization)
+algorithm = paretocsp
 # The count of initial random points, only valid when the algorithm is tpe
 n_init = 200
-# The population size, only valid when the algorithm is afpo or pso
+# The population size, only valid when the algorithm is ParetoCSP
 pop = 92
 # The maximum steps of program runs
 max_step = 5000
