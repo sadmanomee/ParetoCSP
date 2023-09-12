@@ -1,7 +1,10 @@
+tensorflow==2.11.*
 m3gnet
 pymatgen
 megnet
+pandas
+h5py
 pymoo
 hyperopt
 configparser
-ArgumentParser
+argparse
