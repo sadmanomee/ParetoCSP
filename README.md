@@ -1,7 +1,7 @@
 # ParetoCSP
 Github repository for our manuscript - **"Crystal structure prediction using neural network potential and age-fitness Pareto genetic algorithm"**
 
-Authors: Sadman Sadeed Omee, Lai Wei, and Jianjun Hu.
+Authors: Sadman Sadeed Omee, Lai Wei, Ming Hu, and Jianjun Hu.
 
 
 [Machine Learning and Evolution Laboratory,](http://mleg.cse.sc.edu)<br />
