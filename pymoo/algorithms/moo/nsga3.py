@@ -88,7 +88,9 @@ class NSGA3(GeneticAlgorithm):
         else:
             survival = ReferenceDirectionSurvival(ref_dirs)
         
-        print('*********** NSGA3 + AFPO ***********')
+        print('*********************************************************')
+        print('*********************** ParetoCSP ***********************')
+        print('*********************************************************\n')
 
         super().__init__(pop_size=pop_size,
                          sampling=sampling,
