@@ -1,5 +1,5 @@
 # ParetoCSP
-Github repository for our manuscript - **"Crystal structure prediction using neural network potential and age-fitness Pareto genetic algorithm"** \[[Paper](http://dx.doi.org/10.20517/jmi.2023.33)\]
+Github repository for our paper - **"Crystal structure prediction using neural network potential and age-fitness Pareto genetic algorithm"** \[[Paper](http://dx.doi.org/10.20517/jmi.2023.33)\]
 
 Authors: Sadman Sadeed Omee, Lai Wei, Ming Hu, and Jianjun Hu. <br>
 Published in **Journal of Materials Informatics**.
@@ -42,7 +42,7 @@ To specify the crystal composition and other arguments, use the following comman
 ```bash
 python predict_structure.py --comp=Sr1Ti1O3 --alg=paretocsp --pop=92 --max_step=5000
 ```
-This will run ParetoCSP for the composition SrTiO<sub>3</sub> (you need to specify the atom number after each compound symbol) for the PartoCSP algorithm with a population size of 92 for the genetic algorithm and the algorithm will run for a total 5000 generations. The output crystal structure (CIF file) path will be printed at the end of the algorithm run (should have a '_relaxed' as a suffix in its name). 
+This will run ParetoCSP for the composition Sr<sub>1</sub>Ti<sub>1</sub>O<sub>3</sub> (you need to specify the atom number after each compound symbol) for the PartoCSP algorithm with a **population size** of 92 for the genetic algorithm and the algorithm will run for a total 5000 **generations**. The output crystal structure (CIF file) path will be printed at the end of the algorithm run (should have a '_relaxed' as a suffix in its name). 
 
 Other arguments that can be passed with the command are mentioned in ```predict_structure.py``` file. You can try different combinations of population size, number of generations, crossover probability, mutation probability, seed, etc. to get different results.
 
